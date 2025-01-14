@@ -16,7 +16,7 @@ protocol MYRecognizeRule {
 class MYWordRecognizeRule: MYRecognizeRule {
     
     var pattern: String {
-        "[\\w'0-9\\-:]+"
+        "[\\w'0-9-:]+"
     }
 }
 

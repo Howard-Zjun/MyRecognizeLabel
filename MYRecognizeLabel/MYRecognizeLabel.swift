@@ -55,7 +55,8 @@ class MYRecognizeLabel: UILabel {
             isUserInteractionEnabled = true
             guard let text else { return }
             
-            manager.set(text: text, font: font)
+            let mText = text.replacingOccurrences(of: "\r", with: "")
+            manager.set(text: mText, font: font)
         }
     }
     
@@ -64,7 +65,16 @@ class MYRecognizeLabel: UILabel {
             isUserInteractionEnabled = true
             guard let attributedText else { return }
             
-            manager.set(attr: attributedText, font: font)
+            let mAttr = NSMutableAttributedString(attributedString: attributedText)
+            
+            let regex = try! NSRegularExpression(pattern: "\r")
+            var location = 0
+            for resultItem in regex.matches(in: mAttr.string, range: .init(location: 0, length: mAttr.length)) {
+                let range = resultItem.range
+                mAttr.replaceCharacters(in: .init(location: location + range.location, length: range.length), with: "")
+                location -= range.length
+            }
+            manager.set(attr: mAttr, font: font)
         }
     }
     

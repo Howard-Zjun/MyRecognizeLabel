@@ -46,9 +46,10 @@ class MYRecognizelManager: NSObject {
         let text = attr.string
         var ranges: [(String, NSRange)] = []
         let regex = try! NSRegularExpression(pattern: rule.pattern)
-        regex.enumerateMatches(in: text, range: .init(location: 0, length: text.count)) { match, _, _ in
-            guard let range = match?.range else { return }
-            ranges.append(((text as NSString).substring(with: range), range))
+        for resultItem in regex.matches(in: text, range: .init(location: 0, length: text.count)) {
+            let range = resultItem.range
+            let subStr = (text as NSString).substring(with: range)
+            ranges.append((subStr, range))
         }
         self.ranges = ranges
         
