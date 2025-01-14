@@ -1,0 +1,6 @@
+framework module MyBaseExtension {
+  umbrella header "MyBaseExtension-umbrella.h"
+
+  export *
+  module * { export * }
+}

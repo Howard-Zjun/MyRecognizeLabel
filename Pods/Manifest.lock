@@ -1,0 +1,20 @@
+PODS:
+  - MyBaseExtension (0.0.5)
+  - SnapKit (5.7.1)
+
+DEPENDENCIES:
+  - MyBaseExtension
+  - SnapKit
+
+SPEC REPOS:
+  trunk:
+    - MyBaseExtension
+    - SnapKit
+
+SPEC CHECKSUMS:
+  MyBaseExtension: b4a156775637f6bea13af8eb3e12d2fb02116fd6
+  SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
+
+PODFILE CHECKSUM: 79546f6c29ab1582598e17a4be9f7894d4cf1a2c
+
+COCOAPODS: 1.15.2
