@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  MYRecognizeLabel
 //
-//  Created by ios on 2025/1/14.
+//  Created by Howard-Zjun on 2025/1/14.
 //
 
 import UIKit

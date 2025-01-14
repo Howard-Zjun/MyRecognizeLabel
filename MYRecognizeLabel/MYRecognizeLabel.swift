@@ -2,7 +2,7 @@
 //  MYRecognizeLabel.swift
 //  ListenSpeak
 //
-//  Created by ios on 2025/1/9.
+//  Created by Howard-Zjun on 2025/1/9.
 //
 
 import UIKit
@@ -18,7 +18,7 @@ class MYRecognizeLabel: UILabel {
     lazy var textView: UITextView = {
         let textView = UITextView(frame: .init(x: 0, y: 0, width: kwidth, height: kheight), textContainer: manager.textContainer)
         textView.backgroundColor = .clear
-//        textView.textColor = .clear
+        textView.textColor = .clear
         textView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = .zero

@@ -2,7 +2,7 @@
 //  MYRecognizelManager.swift
 //  ListenSpeak
 //
-//  Created by ios on 2025/1/13.
+//  Created by Howard-Zjun on 2025/1/13.
 //
 
 import UIKit
