@@ -9,11 +9,29 @@ import UIKit
 
 class MYRecognizeLabel: UILabel {
 
-    var needRecognize: Bool = false
+    var needRecognize: Bool = false {
+        didSet {
+            isUserInteractionEnabled = needRecognize
+        }
+    }
     
     var detectionBlock: ((String, NSRange) -> Void)?
 
     let manager: MYRecognizelManager = .init()
+    
+    lazy var alpha0Layer: CAShapeLayer = {
+        let maskLayer = CAShapeLayer()
+        let path = UIBezierPath(rect: .init(x: 0, y: 0, width: kwidth, height: 0))
+        maskLayer.path = path.cgPath
+        maskLayer.fillColor = UIColor.clear.cgColor
+        return maskLayer
+    }()
+    
+    lazy var baseView: UIView = {
+        let baseView = UIView()
+        baseView.layer.mask = alpha0Layer
+        return baseView
+    }()
     
     lazy var textView: UITextView = {
         let textView = UITextView(frame: .init(x: 0, y: 0, width: kwidth, height: kheight), textContainer: manager.textContainer)
@@ -34,25 +52,28 @@ class MYRecognizeLabel: UILabel {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(textView)
+        addSubview(baseView)
+        baseView.addSubview(textView)
         manager.update(width: kwidth)
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        addSubview(textView)
+        addSubview(baseView)
+        baseView.addSubview(textView)
         manager.update(width: kwidth)
     }
     
     override func layoutSubviews() {
-        textView.kwidth = kwidth
-        textView.kheight = kheight
+        super.layoutSubviews()
+        alpha0Layer.frame = bounds
+        baseView.frame = bounds
+        textView.frame = baseView.bounds
         manager.update(width: kwidth)
     }
     
     override var text: String? {
         didSet {
-            isUserInteractionEnabled = true
             guard let text else { return }
             
             let mText = text.replacingOccurrences(of: "\r", with: "")
@@ -62,7 +83,6 @@ class MYRecognizeLabel: UILabel {
     
     override var attributedText: NSAttributedString? {
         didSet {
-            isUserInteractionEnabled = true
             guard let attributedText else { return }
             
             let mAttr = NSMutableAttributedString(attributedString: attributedText)
@@ -91,10 +111,6 @@ class MYRecognizeLabel: UILabel {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard needRecognize else {
-            super.touchesEnded(touches, with: event)
-            return
-        }
         guard let location = touches.first?.location(in: self) else {
             super.touchesEnded(touches, with: event)
             return
@@ -108,8 +124,8 @@ class MYRecognizeLabel: UILabel {
         }
         if let item = manager.getWord(locationPoint: locationPoint) {
             detectionBlock?(item.0, item.1)
-        } else {
-            super.touchesEnded(touches, with: event)
         }
+        
+        super.touchesEnded(touches, with: event)
     }
 }
