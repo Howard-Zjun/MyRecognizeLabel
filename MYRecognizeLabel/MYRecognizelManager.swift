@@ -34,15 +34,20 @@ class MYRecognizelManager: NSObject {
         textContainer.size = .init(width: width, height: CGFLOAT_MAX)
     }
     
+    // String 类型字体统一，用同一个
     func set(text: String, font: UIFont) {
         let attr = NSAttributedString(string: text)
         set(attr: attr, font: font)
     }
     
-    func set(attr: NSAttributedString, font: UIFont) {
+    // NSAttributedString 类型字体不一定统一，用 NSAttributedString 内部的
+    func set(attr: NSAttributedString, font: UIFont?) {
         let attr = NSMutableAttributedString(attributedString: attr)
+        if let font {
+            attr.addAttribute(.font, value: font, range: .init(location: 0, length: attr.length))
+        }
+        
         attr.addAttribute(.foregroundColor, value: UIColor.clear, range: .init(location: 0, length: attr.length))
-        attr.addAttribute(.font, value: font, range: .init(location: 0, length: attr.length))
         let text = attr.string
         var ranges: [(String, NSRange)] = []
         let regex = try! NSRegularExpression(pattern: rule.pattern)

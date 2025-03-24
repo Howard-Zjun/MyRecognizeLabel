@@ -21,9 +21,7 @@ class MYRecognizeLabel: UILabel {
     
     lazy var alpha0Layer: CAShapeLayer = {
         let maskLayer = CAShapeLayer()
-        let path = UIBezierPath(rect: .init(x: 0, y: 0, width: kwidth, height: 0))
-        maskLayer.path = path.cgPath
-        maskLayer.fillColor = UIColor.clear.cgColor
+        maskLayer.fillColor = UIColor.black.cgColor
         return maskLayer
     }()
     
@@ -67,6 +65,10 @@ class MYRecognizeLabel: UILabel {
     override func layoutSubviews() {
         super.layoutSubviews()
         alpha0Layer.frame = bounds
+        let path1 = UIBezierPath(rect: bounds)
+        let path2 = UIBezierPath(rect: bounds)
+        path1.append(path2.reversing())
+        alpha0Layer.path = path1.cgPath
         baseView.frame = bounds
         textView.frame = baseView.bounds
         manager.update(width: kwidth)
@@ -77,6 +79,8 @@ class MYRecognizeLabel: UILabel {
             guard let text else { return }
             
             let mText = text.replacingOccurrences(of: "\r", with: "")
+            
+            super.text = mText
             manager.set(text: mText, font: font)
         }
     }
@@ -94,7 +98,9 @@ class MYRecognizeLabel: UILabel {
                 mAttr.replaceCharacters(in: .init(location: location + range.location, length: range.length), with: "")
                 location -= range.length
             }
-            manager.set(attr: mAttr, font: font)
+            
+            super.attributedText = mAttr
+            manager.set(attr: mAttr, font: nil)
         }
     }
     
